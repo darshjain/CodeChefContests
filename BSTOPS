@@ -1,0 +1,87 @@
+#include <iostream>
+#define ll long long int
+using namespace std;
+
+struct node
+{
+      int data;
+      int position;
+      node *left;
+      node *right;
+};
+
+struct node *newnode(int val , int pos)
+{
+      node *temp = new node;
+      temp -> data = val;
+      temp -> position = pos;
+      temp -> left = NULL;
+      temp -> right = NULL;
+      return temp;
+}
+
+struct node *insert(node *root ,int key ,int pos)
+{
+      if(root==NULL) 
+      {
+            node *temp = newnode(key,pos);
+            std::cout << temp -> position << std::endl;
+            return temp;
+      }
+      else if(root -> data < key)
+            root -> right = insert(root -> right,key,2*pos+1);
+      else root -> left = insert(root -> left, key , 2*pos);
+      return root;
+}
+
+struct node *deletenode(node *root ,int key)
+{
+      static int flag;
+      if(root)
+      {
+            if(root -> data > key) 
+                  root -> left = deletenode(root ->left, key);
+            else if(root -> data < key)
+                  root -> right = deletenode(root ->right ,key);
+            else
+            {
+                  node *temp;
+                  if(root -> left && root -> right)
+                  {
+                        std::cout << root -> position << std::endl;
+                        flag=5;
+                        temp = root -> right;
+                        while(temp -> left) temp = temp ->left;
+                        root -> data = temp -> data;
+                        root -> right = deletenode(root -> right, temp -> data);
+                  }
+                  else
+                  {
+                        if(flag!=5) std::cout << root -> position << std::endl;
+                        else flag = 3;
+                        if(root -> left) temp = root -> left;
+                        else temp = root -> right;
+                        free(root);
+                        return temp;
+                  }
+            }
+      }
+      return root;
+}
+
+int main() {
+      ios_base::sync_with_stdio(false);
+      cin.tie(NULL);
+      node *root = NULL;
+      ll t;
+      std::cin >> t;
+      while(t--){
+            char c;
+            int key;
+            std::cin >> c >> key;
+            if(c=='i') root = insert(root,key,1);
+            else root = deletenode(root,key);
+      }
+	// your code goes here
+	return 0;
+}
