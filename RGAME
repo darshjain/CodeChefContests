@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+#define ll unsigned long long int
+#define b 1000000007
+
+int main() {
+      ll t;
+      std::cin >> t;
+      while(t--) {
+            ll n;
+            std::cin >> n;
+            ll a[n+1],sum=0,temp,p=1;
+            std::cin >> a[0];
+            temp = a[0];
+            for(ll i=1;i<=n;i++){
+                  std::cin >> a[i];
+                  sum = ((2*sum)%b +(2*temp*a[i])%b);
+                  temp = (temp+p*a[i])%b;
+                  p=(2*p)%b;
+            }
+      std::cout << sum%b << std::endl;
+      }
+	// your code goes here
+	return 0;
+}
